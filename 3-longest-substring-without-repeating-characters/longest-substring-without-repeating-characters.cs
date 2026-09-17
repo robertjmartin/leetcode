@@ -3,34 +3,32 @@ using System.Collections;
 public class Solution {
     public int LengthOfLongestSubstring(string s) {
         int longestLength = 0;
+        HashSet<char> seen = new HashSet<char>();
+        int start = 0;
+        int end = 0;
 
-        for (int i = 0; i < s.Length; i++)
+        while (end < s.Length)
         {
-            int curLength = LengthOfLongestSubstringFrom(s, i);
+            if (seen.Contains(s[end]))
+            {
+                do
+                {
+                    seen.Remove(s[start]);
+                    start++;
+                } while (seen.Contains(s[end]));
+            }
+
+            seen.Add(s[end]);
+       
+            int curLength = end-start+1;
             if (curLength > longestLength)
             {
                 longestLength = curLength;
             }
+
+            end++;
         }
+
         return longestLength;
-    }
-
-    private int LengthOfLongestSubstringFrom(string s, int i)
-    {
-        HashSet<int> seen = new HashSet<int>();
-        int length = 0;
-
-        while(i < s.Length)
-        {
-            if (seen.Contains(s[i]))
-            {
-                break;
-            }
-
-            seen.Add(s[i]);
-            length++;
-            i++;
-        }
-        return length;
     }
 }
